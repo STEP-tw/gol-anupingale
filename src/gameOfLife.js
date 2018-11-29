@@ -45,12 +45,6 @@ const countAliveNeighbours = function(allNeighbours, currentGeneration){
   }
 }
 
-const calculateAliveNeighbours = function(allNeighbours, currentGeneration){
-  let cells = Object.keys(allNeighbours);
-  let countAlive  = countAliveNeighbours(allNeighbours, currentGeneration);
-  return cells.reduce(countAlive, {});
-}
-
 const verifyRules = function(neighbourCount, currentGeneration, cell){
   let element = JSON.parse(cell);
   if(neighbourCount[cell] == 3){
@@ -63,9 +57,9 @@ const verifyRules = function(neighbourCount, currentGeneration, cell){
  
 const nextGeneration = function(currentGeneration, bound) {
   let allNeighbours = extractAllNeighbours(bound);
-  let neighbourCount = calculateAliveNeighbours(allNeighbours, currentGeneration);
   let keys = Object.keys(allNeighbours);
-  let aliveCells = [];
+  let countAlive  = countAliveNeighbours(allNeighbours, currentGeneration);
+  let neighbourCount = keys.reduce(countAlive, {});
   let verify = verifyRules.bind(null,neighbourCount,currentGeneration);
   return keys.map(verify).filter(x => x != undefined);
 }
