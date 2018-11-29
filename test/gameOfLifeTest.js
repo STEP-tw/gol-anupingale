@@ -12,7 +12,7 @@ describe('nextGeneration',() => {
     assert.deepEqual(actualNextGen,[]);
   });
 
-  it.skip('should generate a vertical blinker as the next step of a horizontal blinker',() => {
+  it('should generate a vertical blinker as the next step of a horizontal blinker',() => {
     let currentGeneration = [[0,1],[1,1],[2,1]];
     let expectedNextGen = [[1,0],[1,1],[1,2]]
     let bounds = {topLeft: [0,0], bottomRight: [3,3]};

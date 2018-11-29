@@ -42,13 +42,14 @@ const calculateAliveNeighboursOfCell = function(allNeighbours, currentGeneration
 
 const calculateAlive = function(allNeighbours, currentGeneration) {
   return function(result, cell) {
-    return calculateAliveNeighboursOfCell(allNeighbours, currentGeneration, cell);
+    result[cell] = calculateAliveNeighboursOfCell(allNeighbours, currentGeneration, cell);
+    return result;
   }
 }
 
 const calculateAliveNeighbours = function(allNeighbours, currentGeneration){
   let cells = Object.keys(allNeighbours);
-  let countAlive  = calculateAlive.bind(null, allNeighbours, currentGeneration);
+  let countAlive  = calculateAlive(allNeighbours, currentGeneration);
   let neighboursState = cells.reduce(countAlive, {});
   return neighboursState;
 }
