@@ -6,8 +6,8 @@ const isAlive = function(currentGeneration, cell) {
 
 const isValid = function(worldSize, neighbour) {
   let {topLeft, bottomRight} = worldSize;
-  case1 = topLeft[0] <= neighbour[0] && neighbour[0] <= bottomRight[0];
-  case2 = neighbour[1] >= topLeft[1] && neighbour[1] <= bottomRight[1];
+  let case1 = topLeft[0] <= neighbour[0] && neighbour[0] <= bottomRight[0];
+  let case2 = neighbour[1] >= topLeft[1] && neighbour[1] <= bottomRight[1];
   return case1 && case2;
 }
 
@@ -23,7 +23,7 @@ const extractNeighbours = function(cell, worldSize) {
 
 const extractAllNeighbours = function(bound){
   let {topLeft, bottomRight} = bound;
-  let allNeighbours = {}
+  let allNeighbours = {};
   for (let row = topLeft[0]; row <= bottomRight[0];row++) {
     for (let column = topLeft[1]; column <= bottomRight[1];column++) {
       allNeighbours["["+row+", "+column+"]"] = extractNeighbours([row,column],bound); 
@@ -37,7 +37,7 @@ const calculateAliveNeighboursOfCell = function(allNeighbours, currentGeneration
   let neighboursOfCell = allNeighbours[cell];
   for (let neighbour of neighboursOfCell){
     let alive = isAlive(currentGeneration, neighbour);
-    if(alive) { numberOfAliveNeighbours++; }
+    alive && numberOfAliveNeighbours++; 
   }
   return numberOfAliveNeighbours;
 }
