@@ -22,8 +22,8 @@ const extractNeighbours = function(cell, worldSize) {
 const extractAllNeighbours = function(bound){
   let {topLeft, bottomRight} = bound;
   let allNeighbours = {}
-  for (let row = topLeft[0]; row<=bottomRight[0];row++) {
-    for (let column = topLeft[1]; column<=bottomRight[1];column++) {
+  for (let row = topLeft[0]; row <= bottomRight[0];row++) {
+    for (let column = topLeft[1]; column <= bottomRight[1];column++) {
       allNeighbours["["+row+", "+column+"]"] = extractNeighbours([row,column],bound); 
     }
   }
