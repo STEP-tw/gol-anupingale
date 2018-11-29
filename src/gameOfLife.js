@@ -11,25 +11,29 @@ const isValid = function(worldSize, neighbour) {
   return case1 && case2;
 }
 
-const extractNeighbours = function(cell, worldSize) {
-  let row = [cell[0]-1, cell[0], cell[0]+1];
-  let column = [cell[1]-1, cell[1], cell[1]+1];
+const extractNeighbours = function(worldSize) {
+  return function(result, cell) {
+  let position = JSON.parse(cell);
+  let row = [position[0]-1, position[0], position[0]+1];
+  let column = [position[1]-1, position[1], position[1]+1];
   let zip = zipper(column);
   let allNeighbours = row.reduce(zip, []);
   allNeighbours.splice(4,1);
   let validateNeighbour = isValid.bind(null, worldSize);
-  return allNeighbours.filter(validateNeighbour);
+  result[cell] = allNeighbours.filter(validateNeighbour);
+  return result;
+  }
 }
 
-const extractAllNeighbours = function(bound){
+const initWorld = function(bound) {
   let {topLeft, bottomRight} = bound;
-  let allNeighbours = {};
+  let world = {};
   for (let row = topLeft[0]; row <= bottomRight[0];row++) {
     for (let column = topLeft[1]; column <= bottomRight[1];column++) {
-      allNeighbours["["+row+", "+column+"]"] = extractNeighbours([row,column],bound); 
+      world["["+row+", "+column+"]"] = 0;
     }
   }
-  return allNeighbours;
+  return world;
 }
 
 const countAliveNeighbours = function(allNeighbours, currentGeneration){
@@ -37,8 +41,7 @@ const countAliveNeighbours = function(allNeighbours, currentGeneration){
     let neighbourCount = 0;
     let neighbours = allNeighbours[cell];
     for (let neighbour of neighbours){
-      let alive = isAlive(currentGeneration, neighbour);
-      alive && neighbourCount++; 
+      let alive = isAlive(currentGeneration, neighbour) && neighbourCount++; 
     }
     result[cell] = neighbourCount;
     return result;
@@ -56,9 +59,10 @@ const verifyRules = function(neighbourCount, currentGeneration, cell){
 }
  
 const nextGeneration = function(currentGeneration, bound) {
-  let allNeighbours = extractAllNeighbours(bound);
-  let keys = Object.keys(allNeighbours);
-  let countAlive  = countAliveNeighbours(allNeighbours, currentGeneration);
+  let keys = Object.keys(initWorld(bound));
+  let extract = extractNeighbours(bound);
+  let neighbours = keys.reduce(extract, {});
+  let countAlive  = countAliveNeighbours(neighbours, currentGeneration);
   let neighbourCount = keys.reduce(countAlive, {});
   let verify = verifyRules.bind(null,neighbourCount,currentGeneration);
   return keys.map(verify).filter(x => x != undefined);
