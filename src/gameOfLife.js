@@ -32,28 +32,23 @@ const extractAllNeighbours = function(bound){
   return allNeighbours;
 }
 
-const calculateAliveNeighboursOfCell = function(allNeighbours, currentGeneration, cell){
-  let numberOfAliveNeighbours = 0;
-  let neighboursOfCell = allNeighbours[cell];
-  for (let neighbour of neighboursOfCell){
-    let alive = isAlive(currentGeneration, neighbour);
-    alive && numberOfAliveNeighbours++; 
-  }
-  return numberOfAliveNeighbours;
-}
-
-const calculateAlive = function(allNeighbours, currentGeneration) {
+const countAliveNeighbours = function(allNeighbours, currentGeneration){
   return function(result, cell) {
-    result[cell] = calculateAliveNeighboursOfCell(allNeighbours, currentGeneration, cell);
+    let neighbourCount = 0;
+    let neighbours = allNeighbours[cell];
+    for (let neighbour of neighbours){
+      let alive = isAlive(currentGeneration, neighbour);
+      alive && neighbourCount++; 
+    }
+    result[cell] = neighbourCount;
     return result;
   }
 }
 
 const calculateAliveNeighbours = function(allNeighbours, currentGeneration){
   let cells = Object.keys(allNeighbours);
-  let countAlive  = calculateAlive(allNeighbours, currentGeneration);
-  let neighboursState = cells.reduce(countAlive, {});
-  return neighboursState;
+  let countAlive  = countAliveNeighbours(allNeighbours, currentGeneration);
+  return cells.reduce(countAlive, {});
 }
 
 const varifyRules = function(cell, neighbourCount, currentGeneration){
