@@ -6,7 +6,9 @@ const isAlive = function(currentGeneration, cell) {
 
 const isValid = function(worldSize, neighbour) {
   let {topLeft, bottomRight} = worldSize;
-  return neighbour.every(element => element >= topLeft[0] && element <= bottomRight[1]);
+  case1 = topLeft[0] <= neighbour[0] && neighbour[0] <= bottomRight[0];
+  case2 = neighbour[1] >= topLeft[1] && neighbour[1] <= bottomRight[1];
+  return case1 && case2;
 }
 
 const extractNeighbours = function(cell, worldSize) {
