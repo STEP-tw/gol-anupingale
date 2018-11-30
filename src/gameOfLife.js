@@ -16,8 +16,7 @@ const extractNeighbours = function(worldSize) {
   let position = JSON.parse(cell);
   let row = [position[0]-1, position[0], position[0]+1];
   let column = [position[1]-1, position[1], position[1]+1];
-  let zip = zipper(column);
-  let allNeighbours = row.reduce(zip, []);
+  let allNeighbours = row.reduce(zipper(column), []);
   allNeighbours.splice(4,1);
   let validateNeighbour = isValid.bind(null, worldSize);
   result[cell] = allNeighbours.filter(validateNeighbour);
@@ -62,7 +61,7 @@ const nextGeneration = function(currentGeneration, bound) {
   let keys = Object.keys(initWorld(bound));
   let extract = extractNeighbours(bound);
   let neighbours = keys.reduce(extract, {});
-  let countAlive  = countAliveNeighbours(neighbours, currentGeneration);
+  let countAlive = countAliveNeighbours(neighbours, currentGeneration);
   let neighbourCount = keys.reduce(countAlive, {});
   let verify = verifyRules.bind(null,neighbourCount,currentGeneration);
   return keys.map(verify).filter(x => x != undefined);
