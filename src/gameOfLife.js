@@ -1,5 +1,9 @@
 const { zipper, coordinateGenerator } = require("./gameOfLifeUtil.js");
 
+const createAdjacentNumber = function(number) {
+  return [number-1,number,number+1];
+}
+
 const isAlive = function(currentGeneration, cell) {
   return currentGeneration.some(element => element[0] == cell[0] && element[1] == cell[1]);
 }
@@ -14,9 +18,9 @@ const isValid = function(worldSize, neighbour) {
 const extractNeighbours = function(worldSize) {
   return function(result, cell) {
   let position = JSON.parse(cell);
-  let row = [position[0]-1, position[0], position[0]+1];
-  let column = [position[1]-1, position[1], position[1]+1];
-  let allNeighbours = row.reduce(zipper(column), []);
+  let adjacentRow = createAdjacentNumber(position[0]);     
+  let adjacentCol = createAdjacentNumber(position[1]); 
+  let allNeighbours = adjacentRow.reduce(zipper(adjacentCol),[]);
   allNeighbours.splice(4,1);
   let validateNeighbour = isValid.bind(null, worldSize);
   result[cell] = allNeighbours.filter(validateNeighbour);
