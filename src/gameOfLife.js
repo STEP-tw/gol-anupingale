@@ -10,22 +10,22 @@ const isAlive = function(currentGeneration, cell) {
 
 const validateNeighbour = function(worldSize) {
   return function(neighbour){
-  let {topLeft, bottomRight} = worldSize;
-  let case1 = topLeft[0] <= neighbour[0] && neighbour[0] <= bottomRight[0];
-  let case2 = neighbour[1] >= topLeft[1] && neighbour[1] <= bottomRight[1];
-  return case1 && case2;
+    let {topLeft, bottomRight} = worldSize;
+    let verifyRow = topLeft[0] <= neighbour[0] && neighbour[0] <= bottomRight[0];
+    let verifyCol = neighbour[1] >= topLeft[1] && neighbour[1] <= bottomRight[1];
+    return verifyRow && verifyCol;
   }
 }
 
 const extractNeighbours = function(worldSize) {
   return function(result, cell) {
-  let position = JSON.parse(cell);
-  let adjacentRow = createAdjacentNumber(position[0]);     
-  let adjacentCol = createAdjacentNumber(position[1]); 
-  let allNeighbours = adjacentRow.reduce(zipper(adjacentCol),[]);
-  allNeighbours.splice(4,1);
-  result[cell] = allNeighbours.filter(validateNeighbour(worldSize));
-  return result;
+    let position = JSON.parse(cell);
+    let adjacentRow = createAdjacentNumber(position[0]);     
+    let adjacentCol = createAdjacentNumber(position[1]); 
+    let allNeighbours = adjacentRow.reduce(zipper(adjacentCol),[]);
+    allNeighbours.splice(4,1);
+    result[cell] = allNeighbours.filter(validateNeighbour(worldSize));
+    return result;
   }
 }
 
