@@ -7,7 +7,7 @@ const zipper = function(column) {
   }
 }
 
-const coordinateGnerator = function(startingIndex, endingIndex) {
+const coordinateGenerator = function(startingIndex, endingIndex) {
   let indexex = [];
   for(let index = startingIndex; index <= endingIndex; index++) {
     indexex.push(index);
@@ -15,4 +15,4 @@ const coordinateGnerator = function(startingIndex, endingIndex) {
   return indexex;
 }
 
-module.exports = { zipper };
+module.exports = { zipper , coordinateGenerator};
