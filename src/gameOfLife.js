@@ -1,4 +1,4 @@
-const { zipper } = require("./gameOfLifeUtil.js");
+const { zipper, coordinateGenerator } = require("./gameOfLifeUtil.js");
 
 const isAlive = function(currentGeneration, cell) {
   return currentGeneration.some(element => element[0] == cell[0] && element[1] == cell[1]);
@@ -26,13 +26,10 @@ const extractNeighbours = function(worldSize) {
 
 const initWorld = function(bound) {
   let {topLeft, bottomRight} = bound;
-  let world = {};
-  for (let row = topLeft[0]; row <= bottomRight[0];row++) {
-    for (let column = topLeft[1]; column <= bottomRight[1];column++) {
-      world["["+row+", "+column+"]"] = 0;
-    }
-  }
-  return world;
+  let rowCoordinates = coordinateGenerator(topLeft[0],bottomRight[0]);
+  let colCoordinates = coordinateGenerator(topLeft[1],bottomRight[1]);
+  let cells = rowCoordinates.reduce(zipper(colCoordinates),[]);
+  return cells.reduce((result,cell) => { result['['+cell+']']="D"; return result}, {});
 }
 
 const countAliveNeighbours = function(allNeighbours, currentGeneration){
