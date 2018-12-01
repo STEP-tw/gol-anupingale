@@ -51,12 +51,8 @@ const countAliveNeighbours = function(allNeighbours, currentGeneration){
 
 const verifyRules = function(neighbourCount, currentGeneration, cell){
   let element = JSON.parse(cell);
-  if(neighbourCount[cell] == 3){
-    return element;
-  }
-  if(neighbourCount[cell] == 2 && isAlive(currentGeneration,element)) {
-    return element;
-  }
+  let alive = neighbourCount[cell] == 2 && isAlive(currentGeneration,element);
+  return alive || neighbourCount[cell] == 3;
 }
 
 const nextGeneration = function(currentGeneration, bound) {
@@ -65,7 +61,7 @@ const nextGeneration = function(currentGeneration, bound) {
   let countAlive = countAliveNeighbours(neighbours, currentGeneration);
   let neighbourCount = keys.reduce(countAlive, {});
   let verify = verifyRules.bind(null,neighbourCount,currentGeneration);
-  return keys.map(verify).filter(x => x != undefined);
+  return keys.filter(verify).map(x => JSON.parse(x));
 }
 
 module.exports = { nextGeneration };
